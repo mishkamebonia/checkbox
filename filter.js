@@ -1,22 +1,50 @@
-const genderCheckboxes = document.querySelectorAll('input[name="gender"]')
+const checkboxes = document.querySelectorAll('.form-check-input')
+const cards = document.querySelectorAll('.user-card')
 
-const genderArr = []
+const checkedArr = []
 
 export function filterItems(data) {
-  genderCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('click', () => {
-      if (checkbox.checked) {
-        const filters = {
-          male: true,
-          female: false,
-          others: true
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', (event) => {
+      const checkboxValueFilter = checkbox.value.toLowerCase()
+
+      const filteredData = data.filter(dataValue => {
+        const dataValueFilter = dataValue.gender.toLowerCase()
+
+        if (dataValueFilter === checkboxValueFilter) {
+          return true
         }
-      
-        const result = data.filter(person => {
-          return filters[person.gender]
-        })
-        console.log(result)
+      })
+
+      if (checkbox.checked) {
+        checkedArr.push(checkboxValueFilter)
+      } else {
+        const index = checkedArr.indexOf(checkboxValueFilter)
+        if (index > -1) {
+          checkedArr.splice(index, 1)
+        }
       }
+
+      renderData(filteredData)
+      
+      console.log(filteredData)
+      console.log(checkedArr)
     })
+  })
+}
+
+function renderData(filteredData) {
+  cards.forEach(card => {
+    card.style.display = 'none'
+  })
+
+  filteredData.forEach(item => {
+    const cardId = item.id
+    const card = document.getElementById(cardId)
+    if (card) {
+      card.style.display = 'block'
+    } else {
+      card.style.display = 'none'
+    }
   })
 }

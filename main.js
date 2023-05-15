@@ -6,6 +6,4 @@ import {filterItems} from './filter.js'
 
 createCard(Data)
 
-// pushInArray(Data)
-
 filterItems(Data)
